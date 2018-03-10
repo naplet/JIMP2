@@ -1,4 +1,5 @@
 #include<iostream>
+#include <string>
 #include "Palindrome.h"
 int main()
 {
