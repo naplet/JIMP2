@@ -1,47 +1,43 @@
-#include <cstdint>
 #include "DoubleBasePalindromes.h"
-uint64_t DoubleBasePalindromes(int max_vaule_exculsive)
-{
-    int liczba, odwrotna=0, cyfra,suma=0,c=0;
-    std::string alfabet="01",wynik="";
-    for(int i=0;i<=max_vaule_exculsive;i++)
-    {
-        liczba=i;
-        while(liczba!=0)
-        {
-            cyfra=liczba%10;
-            odwrotna=(odwrotna*10)+cyfra;
-            liczba=(liczba-cyfra)/10;
-        }
-        liczba=i;
-        while(liczba>0){
-            wynik=alfabet[liczba%2]+wynik;
-            liczba = (liczba/2);//wynik liczba w dwojkowym
-        }
-        int z,x;
-        for (z = 0, x = wynik.length()-1; z < x; z++, x--)
-        {
-            if (wynik[z] == ' ') z++;
-            if (wynik[x] == ' ') x--;
-            if (wynik[z] != wynik[x])
-                break;
-        }
-        if (z < x)
-        {
-            c=1;
-        }
-        else{
-            c=0;
-        }
 
-        if(i=odwrotna||c==0)
-        {
-            suma=suma+i;
-        }
-        odwrotna=0;
+uint64_t DoubleBasePalindromes(int max_value_exculsive) {
+    uint64_t result;
 
+    for(int i=0; i<= max_value_exculsive; i++) {
+        if(checkIfBinaryPalindrome(i) && checkIfDecimalPalindrome(i))   result += i;
     }
+    return result;
+}
 
+bool checkIfDecimalPalindrome(int number) {
+    string numberInString = to_string(number);
+    string reversed = "";
+    size_t length = numberInString.size();
 
-    return suma;
+    for(int i=length-1; i>=0; i--)  reversed += numberInString[i];
+
+    if(reversed == numberInString)  return true;
+    else                            return false;
+}
+
+bool checkIfBinaryPalindrome(int number) {
+    string binaryNumber = convertToBinary(number);
+    string reversedBinaryNumber = "";
+    size_t length = binaryNumber.size();
+
+    for(int i=length-1; i>=0; i--)  reversedBinaryNumber += binaryNumber[i];
+    if(reversedBinaryNumber == binaryNumber)    return true;
+    else                                        return false;
+}
+
+string convertToBinary(int number) {
+    string binaryNumber;
+    int tmp;
+
+    while(number>0) {
+        tmp = number%2;
+        binaryNumber = to_string(tmp) + binaryNumber;
+        number /= 2;
+    }
+    return binaryNumber;
 }
