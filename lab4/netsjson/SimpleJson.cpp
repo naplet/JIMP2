@@ -4,7 +4,7 @@
 
 namespace nets{
     JsonValue::JsonValue(){
-        theCase = 0;
+        TheCase = 0;
     }
 
     JsonValue::~JsonValue() {
@@ -12,113 +12,108 @@ namespace nets{
     }
 
     JsonValue::JsonValue(int value){
-        theCase = 1;
-        this->intX = value;
+        TheCase = 1;
+        this->IntX = value;
     }
 
     JsonValue::JsonValue(double value){
-        theCase = 2;
-        this->doubleX = value;
+        TheCase = 2;
+        this->DoubleX = value;
     }
 
     JsonValue::JsonValue(const std::string value){
-        theCase = 3;
-        this->stringX = value;
+        TheCase = 3;
+        this->StringX = value;
     }
 
     JsonValue::JsonValue(bool value){
-        theCase = 4;
-        this->boolX = value;
+        TheCase = 4;
+        this->BoolX = value;
     }
 
     JsonValue::JsonValue(std::vector<JsonValue> values){
-        theCase = 5;
-        this->array = values;
+        TheCase = 5;
+        this->Array = values;
     }
 
     JsonValue::JsonValue(std::map<std::string, JsonValue> map){
-        theCase = 6;
-        this->map = map;
+        TheCase = 6;
+        this->Map = map;
     }
 
     int JsonValue::GetTheCase() const {
-        return theCase;
+        return TheCase;
     }
 
     int JsonValue::GetIntX() const {
-        return intX;
+        return IntX;
     }
 
     double JsonValue::GetDoubleX() const {
-        return doubleX;
+        return DoubleX;
     }
 
     const std::string &JsonValue::GetStringX() const {
-        return stringX;
+        return StringX;
     }
 
     bool JsonValue::GetBoolX() const {
-        return boolX;
+        return BoolX;
     }
 
     const std::vector<JsonValue> &JsonValue::GetArray() const {
-        return array;
+        return Array;
     }
 
     const std::map<std::string, JsonValue> &JsonValue::GetMap() const {
-        return map;
+        return Map;
     }
 
     std::string JsonValue::ToString() const{
-        if(GetTheCase()==1)
-            return std::to_string(GetIntX());
-        else if(GetTheCase()==2){
-            std::stringstream stringstream;
-            stringstream << std::fixed << std::setprecision(2) << GetDoubleX();
-            return stringstream.str();
-
+        if(GetTheCase() == 1) return std::to_string(GetIntX());
+        else if(GetTheCase() == 2) {
+            std::string Tmp =  std::to_string(GetDoubleX());
+            for (int i = Tmp.length() -1 ; i > 0 ; --i) if(Tmp[i] != '0') return Tmp.substr(0,i+1);
         }
-        else if(GetTheCase()==3)
-        {
-            return GetStringX();
-        }
-        else if(GetTheCase()==4){
-            if(GetBoolX()==true){
-                return "true";
+        else if(GetTheCase() == 3) {
+            std::string Tmp = "";
+            std::string str = GetStringX();
+            for (int i = 0; i < str.length(); ++i) {
+                if(str[i] == '"' || str[i] == '\\') Tmp += R"(\)";
+                Tmp += str[i];
             }
-            else if(GetBoolX()==false){
+            return "\"" + Tmp + "\"";
+        }
+        else if(GetTheCase() == 4) {
+            if (GetBoolX() == false) {
                 return "false";
             }
+            else if (GetBoolX() == true){
+                return "true";
+            }
             else
+            {
                 return "";
-
-        }
-        else if(GetTheCase()==5){
-            std::string str = "[";
-            bool first = true;
-            for (auto const& value : GetArray()){
-                if (!first) str+=", ";
-                else first= false;
-                str+=value.ToString();
             }
-            str+="]";
-            return str;
         }
-        else if(GetTheCase()==6){
-            std::string str = "[";
-               for (auto const& value : GetMap()){
-                std::string current = value.first;
-                for (int i = 0; i<current.length();++i){
-                    if (current[i] == '\"' || current[i] == '\\'){
-                        current.insert(i,1,'\\');
-                        ++i;
-                    }
+        else if(GetTheCase() == 5){
+            std::string Tmp = "[";
+            for(auto i : GetArray()) Tmp += i.ToString()+ ", ";
+            Tmp = Tmp.substr(0,Tmp.length()-2) + "]";
+            return Tmp;
+        }
+        else if(GetTheCase() == 6){
+            std::string Tmp = "{";
+            for(auto i : GetMap()) {
+                Tmp += R"(")";
+                for (auto j : i.first){
+                    if(j == '"' || j== '\\') Tmp += R"(\)";
+                    Tmp += j;
                 }
-                str+="\"" + current + "\": "+value.second.ToString()+", ";
+                Tmp += R"(": )" + i.second.ToString() + R"(, )";
             }
-            str=str.substr(0,str.length()-2)+'}';
-            return str;
-
+            Tmp = Tmp.substr(0,Tmp.length()-2) + "}";
+            return Tmp;
         }
     }
 
@@ -126,6 +121,11 @@ namespace nets{
         return GetMap().find("a")->second;
 
     }
+
+
+
+
+
 
 
 }

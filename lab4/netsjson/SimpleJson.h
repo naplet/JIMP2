@@ -48,13 +48,13 @@ namespace nets {
 
 
     private:
-        int theCase;
-        int intX;
-        double doubleX;
-        std::string stringX;
-        bool boolX;
-        std::vector<JsonValue> array;
-        std::map<std::string, JsonValue> map;
+        int TheCase;
+        int IntX;
+        double DoubleX;
+        std::string StringX;
+        bool BoolX;
+        std::vector<JsonValue> Array;
+        std::map<std::string, JsonValue> Map;
     };
 }
 
