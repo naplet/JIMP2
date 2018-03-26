@@ -11,9 +11,9 @@ namespace nets{
     }
     std::string View::Render(const std::unordered_map<std::string, std::string> &model) const {
         std::string OutputString="";
-        std::string InputString = GetString();
+        std::string InputString = View::GetString();
         std::smatch Matches;
-        std::regex Pattern {R"("{"{"w+"}"})"};
+        std::regex Pattern{"{{\w+}}"};
         while (std::regex_search(InputString, Matches, Pattern)){
             for(auto Value: Matches){
                 std::string Word =  Value.str().substr(2,Value.str().length()-4);
