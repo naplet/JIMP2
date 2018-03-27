@@ -10,19 +10,38 @@ namespace nets{
         return this->InputString;
     }
     std::string View::Render(const std::unordered_map<std::string, std::string> &model) const {
-        std::string OutputString="";
-        std::string InputString = View::GetString();
-        std::smatch Matches;
-        std::regex Pattern{"{{\\w+}}"};
-        while (std::regex_search(InputString, Matches, Pattern)){
-            for(auto Value: Matches){
-                std::string Word =  Value.str().substr(2,Value.str().length()-4);
-                OutputString+=Matches.prefix().str();
-                if (model.find(Word)!=model.end()) OutputString+=model.find(Word)->second;
+        std::string actual_text = GetString();
+        bool found_next = false;
+
+        std::regex my_regex(R"(\{\{(\w*)\}\})");
+        std::smatch my_matches;
+        regex_search(actual_text, my_matches, my_regex);
+        std::size_t key_index = my_matches.size()-1;
+
+        for(size_t i=0; i<my_matches.size(); i++) {
+            std::size_t index = actual_text.find(my_matches[i]);
+            while(index != std::string::npos) {
+
+                auto it = model.find(my_matches[key_index]);
+                if (it != model.end()) {
+                    std::string founded_key = it->first; // to jest klucz2
+                    std::string founded_value = it->second; // to jest efg
+                    actual_text.replace(index, my_matches[i].length(), founded_value);
+
+                } else {
+                    actual_text.replace(index, my_matches[i].length(), "");
+                }
+                std::cout<<actual_text<<"\n";
+                found_next = regex_search(actual_text, my_matches, my_regex);
+
+                if(found_next){
+                    index = actual_text.find(my_matches[i]);
+                    key_index = my_matches.size()-1;
+                }
+                else break;
             }
-            InputString=Matches.suffix();
         }
-        OutputString+=InputString;
-        return OutputString;
+        return actual_text;
     }
+
 }
