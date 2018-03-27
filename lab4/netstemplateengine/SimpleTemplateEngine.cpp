@@ -31,7 +31,6 @@ namespace nets{
                 } else {
                     actual_text.replace(index, my_matches[i].length(), "");
                 }
-                std::cout<<actual_text<<"\n";
                 found_next = regex_search(actual_text, my_matches, my_regex);
 
                 if(found_next){
