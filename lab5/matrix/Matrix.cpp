@@ -118,8 +118,7 @@ Matrix::Matrix(std::string Text) {
     }
 
 }
-
-std::string Matrix::Print() {
+std::string Matrix::Print() const {
     std::string number_in_string;
     number_in_string += "[";
 
@@ -194,13 +193,46 @@ int Matrix::SetElement(int R, int C, double Value) {
     return 0;
 }
 std::pair<size_t, size_t> Matrix::Size() {
-    return std::pair<size_t, size_t>(this->Rows, this->Cols);
+    return std::pair<size_t, size_t>(Rows, Cols);
+}
+Matrix::Matrix(std::initializer_list<std::vector<std::complex<double>>> matrix_list) {
+    int row_number = int(matrix_list.size());
+    unsigned long col_number = 0;
+
+
+    for(auto row : matrix_list) {
+        col_number = row.size();
+        break;
+    }
+
+    this->Rows = row_number;
+    this->Cols = int(col_number);
+
+
+    std::complex<double> **new_matrix = new std::complex<double> *[this->Rows];
+    for(int i=0; i<this->Rows; i++)
+        new_matrix[i] = new std::complex<double>[this->Cols];
+
+    this->Matrix_Complex = new_matrix;
+    this->Matrix_Complex[0][0] = 1.0 + 1.0i;
+
+    int i=0;
+    int k=0;
+
+    for(auto row : matrix_list) {
+        k = 0;
+        for(auto element : row) {
+            this->Matrix_Complex[i][k] = element;
+            k++;
+        }
+        i++;
+    }
+
 }
 //działania
-Matrix Matrix::Add(const Matrix Matrix_ToAdd) {
+Matrix Matrix::Add(const Matrix Matrix_ToAdd) const {
     if(this->Rows!=Matrix_ToAdd.Rows || this->Cols!=Matrix_ToAdd.Cols){
-        std::cout<<"Wrong size"<<std::endl;
-        return *this;
+        throw "Different sizes!";
     }
     Matrix Result(Rows,Cols);
     for(int i=0;i<Rows;i++){
@@ -210,10 +242,9 @@ Matrix Matrix::Add(const Matrix Matrix_ToAdd) {
     }
     return Result;
 }
-Matrix Matrix::Sub(const Matrix Matrix_ToSub) {
+Matrix Matrix::Sub(const Matrix Matrix_ToSub) const{
     if(this->Rows!=Matrix_ToSub.Rows || this->Cols!=Matrix_ToSub.Cols){
-        std::cout<<"Wrong size"<<std::endl;
-        return *this;
+        throw "Different sizes!";
     }
     Matrix Result(Rows,Cols);
     for(int i=0;i<Rows;i++){
@@ -223,10 +254,9 @@ Matrix Matrix::Sub(const Matrix Matrix_ToSub) {
     }
     return Result;
 }
-Matrix Matrix::Mul(const Matrix &Matrix_ToMul) {
+Matrix Matrix::Mul(const Matrix &Matrix_ToMul)const {
     if(this->Cols!=Matrix_ToMul.Rows ){
-        std::cout<<"Wrong size"<<std::endl;
-        return *this;
+        throw "Different sizes!";
     }
     Matrix Result(Rows,Matrix_ToMul.Cols);
     for(int i=0;i<Rows;i++){
@@ -236,7 +266,7 @@ Matrix Matrix::Mul(const Matrix &Matrix_ToMul) {
     }
     return Result;
 }
-Matrix Matrix::Mul(std::complex<double> Number) {
+Matrix Matrix::Mul(std::complex<double> Number)const {
     Matrix Result(this->Rows,this->Cols);
     for(int i=0;i<Rows;i++){
         for(int j=0;j<Cols;j++){
@@ -245,7 +275,7 @@ Matrix Matrix::Mul(std::complex<double> Number) {
     }
     return Result;
 }
-Matrix Matrix::Pow(int Number) {
+Matrix Matrix::Pow(int Number)const {
     Matrix Result = *this;
 
     for(int i=1; i<Number; i++)

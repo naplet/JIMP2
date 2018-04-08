@@ -38,21 +38,21 @@ namespace algebra {
 
         int SetElement(int R, int C, double Value);
 
-        Matrix Add(Matrix Matrix_ToAdd);
+        Matrix Add(Matrix Matrix_ToAdd) const;
 
-        Matrix Sub(Matrix Matrix_ToSub);
+        Matrix Sub(Matrix Matrix_ToSub) const;
 
-        Matrix Mul(const Matrix &Matrix_ToMul);
+        Matrix Mul(const Matrix &Matrix_ToMul) const;
 
-        Matrix Mul(std::complex<double> Number);
+        Matrix Mul(std::complex<double> Number) const;
 
-        Matrix Div(Matrix matrix);
+       // Matrix Div(Matrix matrix) const;
 
-        Matrix Div(std::complex<double> Number);
+        //Matrix Div(std::complex<double> Number) const;
 
-        Matrix Pow(int Number);
+        Matrix Pow(int Number) const;
 
-        std::string Print();
+        std::string Print() const;
         std::pair<size_t, size_t> Size();
 
     private:
