@@ -1,32 +1,31 @@
-
 #include "Word.h"
 
 namespace datastructures{
     Word::Word() {
-        word="";
+        word_="";
     }
 
     Word::Word(string str) {
-        word=str;
+        word_=str;
     }
 
     string Word::GetWord() const {
-        return word;
+        return word_;
     }
 
     bool Word::operator<(const Word &other) const {
-        return word < other.GetWord();
+        return word_ < other.GetWord();
     }
 
     bool Word::operator>(const Word &other) const {
-        return word > other.GetWord();
+        return word_ > other.GetWord();
     }
 
     bool Word::operator==(const Word &other) const {
-        return word == other.GetWord();
+        return word_ == other.GetWord();
     }
 
     Word::operator string() const {
-        return word;
+        return word_;
     }
 }

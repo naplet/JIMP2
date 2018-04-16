@@ -1,21 +1,22 @@
 
 
 #include "Counts.h"
+
 namespace datastructures {
     Counts::Counts() {
-        counter = 1;
+        counter_ = 1;
     }
 
     Counts::Counts(int number) {
-        counter = number;
+        counter_ = number;
     }
 
     int Counts::GetCounts() const {
-        return counter;
+        return counter_;
     }
 
     Counts::operator int() const {
-        return counter;
+        return counter_;
     }
 
     bool Counts::operator<(const Counts &other) {
@@ -31,13 +32,13 @@ namespace datastructures {
     }
 
     Counts &Counts::operator++() {
-        counter++;
+        counter_++;
         return *this;
     }
 
     Counts Counts::operator++(int foo) {
         Counts tmp(counter_);
-        ++counter;
+        ++counter_;
         return tmp;
     }
 }

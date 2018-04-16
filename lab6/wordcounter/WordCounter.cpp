@@ -1,5 +1,5 @@
-
 #include "WordCounter.h"
+
 namespace datastructures{
     WordCounter::WordCounter(const std::initializer_list<Word> &argument) {
         for (auto value:argument){
@@ -73,8 +73,8 @@ namespace datastructures{
         return (int)words_list_.size();
     }
 
-    std::set<Word> WordCounter::Words() const {
-        std::set<Word> words;
+    set<Word> WordCounter::Words() const {
+        set<Word> words;
         for (auto const &value : words_list_)  words.insert(value.first);
         return words;
     }

@@ -1,16 +1,12 @@
 
 
-#ifndef JIMP_EXERCISES_WORD_H
-#define JIMP_EXERCISES_WORD_H
-#include <iostream>
-#include <memory>
-#include <set>
-#include <string>
+#include<string>
 using std::string;
-namespace datastructures{
+
+namespace datastructures {
     class Word {
     public:
-        // constructors:
+
         Word();
         Word(string str);
 
@@ -22,7 +18,8 @@ namespace datastructures{
         operator string() const;
 
     private:
-        std::string word;
+        std::string word_;
     };
 }
-#endif //JIMP_EXERCISES_WORD_H
+
+

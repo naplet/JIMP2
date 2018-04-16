@@ -1,8 +1,5 @@
 
-#ifndef JIMP_EXERCISES_COUNTS_H
-#define JIMP_EXERCISES_COUNTS_H
-namespace datastructures {
-
+namespace datastructures{
     class Counts {
     public:
         Counts();
@@ -19,8 +16,6 @@ namespace datastructures {
 
 
     private:
-        int counter;
+        int counter_;
     };
-
 }
-#endif //JIMP_EXERCISES_COUNTS_H

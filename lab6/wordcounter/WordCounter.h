@@ -3,18 +3,19 @@
 #ifndef JIMP_EXERCISES_WORDCOUNTER_H
 #define JIMP_EXERCISES_WORDCOUNTER_H
 
-
-#include <iostream>
-#include <string>
-#include <memory>
-#include <set>
-#include <initializer_list>
-#include <vector>
-#include <unordered_map>
-#include <algorithm>
-#include <fstream>
 #include "Word.h"
 #include "Counts.h"
+#include <fstream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <initializer_list>
+#include <string>
+using std::string;
+using std::vector;
+using std::pair;
+using std::set;
+
 namespace datastructures{
     class WordCounter {
     public:
@@ -26,10 +27,10 @@ namespace datastructures{
         friend std::ostream &operator<<(std::ostream &os, WordCounter &wordCounter);
         int TotalWords() const;
         int DistinctWords() const;
-        std::set<Word> Words() const;
+        set<Word> Words() const;
 
     private:
-        std::vector<std::pair<Word,Counts>> words_list_;
+        vector<pair<Word,Counts>> words_list_;
 
     };
     std::ostream &operator<<(std::ostream &os, WordCounter &wordCounter);
