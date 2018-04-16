@@ -6,23 +6,23 @@
 #include <memory>
 #include <set>
 #include <string>
+using std::string;
 namespace datastructures{
     class Word {
     public:
+        // constructors:
         Word();
+        Word(string str);
 
-        ~Word();
+        string GetWord() const;
 
-        explicit Word(std::string new_word);
-
-        std::string GetWord() const;
+        bool operator==(const Word &other) const;
+        bool operator<(const Word &other) const;
+        bool operator>(const Word &other) const;;
+        operator string() const;
 
     private:
         std::string word;
-
     };
-    std::ostream& operator<<(std::ostream &output, Word word);
-    bool operator<(const Word &first, const Word &second);
-    bool operator==(const Word &first, const Word &second);
 }
 #endif //JIMP_EXERCISES_WORD_H

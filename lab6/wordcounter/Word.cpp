@@ -1,32 +1,32 @@
 
 #include "Word.h"
-namespace datastructures {
-    Word::Word() {}
 
-    Word::~Word() {
-        delete &this->word;
+namespace datastructures{
+    Word::Word() {
+        word="";
     }
 
-    Word::Word(std::string new_word) {
-        this->word = new_word;
+    Word::Word(string str) {
+        word=str;
     }
 
-    std::string Word::GetWord() const {
-        return this->word;
+    string Word::GetWord() const {
+        return word;
     }
 
-    std::ostream &operator<<(std::ostream &output, Word word) {
-        output << word.GetWord();
-
-        return output;
-
+    bool Word::operator<(const Word &other) const {
+        return word < other.GetWord();
     }
 
-    bool operator<(const Word &first, const Word &second) {
-        return (first.GetWord() < second.GetWord());
+    bool Word::operator>(const Word &other) const {
+        return word > other.GetWord();
     }
 
-    bool operator==(const Word &first, const Word &second) {
-        return (first.GetWord() == second.GetWord());
+    bool Word::operator==(const Word &other) const {
+        return word == other.GetWord();
+    }
+
+    Word::operator string() const {
+        return word;
     }
 }

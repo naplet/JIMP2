@@ -3,38 +3,41 @@
 #include "Counts.h"
 namespace datastructures {
     Counts::Counts() {
-        this->counts = 0;
+        counter = 1;
     }
 
-    Counts::~Counts() {
-        delete &this->Count;
-    }
-
-    Counts::Counts(int new_count) {
-        this->Count = new_count;
+    Counts::Counts(int number) {
+        counter = number;
     }
 
     int Counts::GetCounts() const {
-        return this->Count;
+        return counter;
+    }
+
+    Counts::operator int() const {
+        return counter;
+    }
+
+    bool Counts::operator<(const Counts &other) {
+        return GetCounts() < other.GetCounts();
+    }
+
+    bool Counts::operator==(const Counts &other) {
+        return GetCounts() == other.GetCounts();
+    }
+
+    bool Counts::operator>(const Counts &other) {
+        return GetCounts() > other.GetCounts();
     }
 
     Counts &Counts::operator++() {
-        this->Count++;
+        counter++;
         return *this;
     }
 
-    bool operator==(const Counts &first, const Counts &second) {
-        return (first.GetCounts() == second.GetCounts());
-    }
-
-    bool operator==(const Counts &first, int second) {
-        return (first.GetCounts() == second);
-    }
-
-    bool operator==(int second, const Counts &first) {
-        return (first.GetCounts() == second);
-    }
-    void Counts::SetCounts(int new_value) {
-        this->counts=new_value;
+    Counts Counts::operator++(int foo) {
+        Counts tmp(counter_);
+        ++counter;
+        return tmp;
     }
 }

@@ -1,76 +1,86 @@
 
 #include "WordCounter.h"
-namespace datastructures {
-
-WordCounter::WordCounter() {
-    this->total_words_counter = 0;
-    this->distinct_words_counter = 0;
-}
-WordCounter::~WordCounter() {
-    delete &this->distinct_words_counter;
-    delete &this->map;
-    delete &this->null_counter;
-    delete &this->total_words_counter;
-    delete &this->words;
-}
-    WordCounter::WordCounter(const std::initializer_list <Word> &new_words) {
-        bool flag;
-        this->total_words_counter = 0;
-        this->distinct_words_counter = 0;
-
-        for(auto &new_word : new_words) {
-            flag = false;
-
-            for(auto &i : this->words)
-                if(new_word.GetWord() == i.GetWord()) {
-                    flag = true;
-                }
-
-            if(flag) {
-                this->total_words_counter++;
-                auto it = map.find(new_word.GetWord());
-                if(it != map.end()) {
-                    ++it->second;
-                }
+namespace datastructures{
+    WordCounter::WordCounter(const std::initializer_list<Word> &argument) {
+        for (auto value:argument){
+            auto it=words_list_.begin();
+            for (it; it!=words_list_.end(); ++it){
+                if (it->first==value) break;
             }
-
-            else {
-                this->words.push_back(new_word);
-                this->total_words_counter++;
-                this->distinct_words_counter++;
-                map.insert({new_word.GetWord(), 1});
+            if (it != words_list_.end()){
+                ++(it->second);
+            }
+            else{
+                words_list_.emplace_back(std::make_pair(value,Counts()));
             }
         }
     }
-int WordCounter::DistinctWords() {
-    return this->distinct_words_counter;
+
+    WordCounter::WordCounter(std::string path_to_file) {
+        std::ifstream file;
+        file.open(path_to_file, std::ios::in);
+        if (file.good()){
+            string str;
+            while (!file.eof()){
+                file >> str;
+                string tmp="";
+                for (char cur : str){
+                    if (isalpha(cur)) tmp+=cur;
+                }
+                if (!tmp.empty()){
+                    auto it=words_list_.begin();
+                    for (it; it!=words_list_.end(); ++it){
+                        if ((string)it->first==tmp) break;
+                    }
+                    if (it != words_list_.end()){
+                        ++(it->second);
+                    }
+                    else{
+                        words_list_.emplace_back(std::make_pair(Word(tmp),Counts()));
+                    }
+                }
+                str = "";
+            }
+            file.close();
+        }
+        else{
+            perror("Open error");
+        }
+    }
+
+    int WordCounter::operator[](const string &key) {
+        for (auto value:words_list_){
+            if ((string)value.first==key) return (int)value.second;
+        }
+        return 0;
+    }
+
+    std::ostream &operator<<(std::ostream &os, WordCounter &wordCounter) {
+        os << "Distinct words: " << wordCounter.DistinctWords() << "   " << "Total words: " << wordCounter.TotalWords() << std::endl;
+        std::sort(wordCounter.words_list_.begin(),wordCounter.words_list_.end());
+        for (auto n: wordCounter.words_list_)   os << (string)n.first << "  ";
+        os << std::endl;
+        return os;
+    }
+
+    int WordCounter::TotalWords() const {
+        int sum=0;
+        for (auto const &value : words_list_)  sum+=value.second;
+        return sum;
+    }
+
+    int WordCounter::DistinctWords() const {
+        return (int)words_list_.size();
+    }
+
+    std::set<Word> WordCounter::Words() const {
+        std::set<Word> words;
+        for (auto const &value : words_list_)  words.insert(value.first);
+        return words;
+    }
+
 }
 
-int WordCounter::TotalWords() {
-    return this->total_words_counter;
-}
-
-std::set<Word> WordCounter::Words() {
-    std::set<Word> output;
-    for(auto &i : this->words)
-        output.emplace(i);
-    return output;
-}
-
-Counts& WordCounter::operator[](std::string id) {
-    auto it = this->map.find(id);
-
-    if(it != this->map.end())
-        return it->second;
-
-    return this->null_counter;
-}
-
-bool operator==(const std::set<Word> &first, const std::vector<Word> &second) {
-    return (first == second);
-}
-
-}
 
 
 

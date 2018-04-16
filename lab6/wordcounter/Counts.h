@@ -6,19 +6,21 @@ namespace datastructures {
     class Counts {
     public:
         Counts();
-        Counts(int new_count);
-        ~Counts();
+        Counts(int number);
+
         int GetCounts() const;
-        void SetCounts(int new_value);
-        Counts& operator++();
+
+        operator int() const ;
+        bool operator<(const Counts &other);
+        bool operator==(const Counts &other);
+        bool operator>(const Counts &other);
+        Counts &operator++();
+        Counts operator++(int foo);
+
 
     private:
-        int counts;
+        int counter;
     };
-
-    bool operator==(const Counts &first, const Counts &second);
-    bool operator==(const Counts &first, int second);
-    bool operator==(int second, const Counts &first);
 
 }
 #endif //JIMP_EXERCISES_COUNTS_H
