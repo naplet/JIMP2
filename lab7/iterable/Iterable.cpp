@@ -102,3 +102,55 @@ Zipper::Zipper(const std::vector<int> &vi, const std::vector<std::string> &vs)
 {
     //this->v = ZipperIterator(vi.begin(),vs.begin(),vi.end(),vs.end());
 }
+
+
+EnumerateIterator::EnumerateIterator(std::vector<std::string>::const_iterator begin,
+                                     std::vector<std::string>::const_iterator end) {
+    this->begin=begin;
+    this->end = end;
+
+}
+
+
+std::pair<int, std::string> EnumerateIterator::Dereference() const {
+    return std::make_pair(getIndex(),getString()) ;
+}
+
+IterableIterator &EnumerateIterator::Next() {
+    if (begin != end) {
+        ++begin;
+        ++index;
+    }
+
+    return *this;
+}
+
+bool EnumerateIterator::NotEquals(const std::unique_ptr<utility::IterableIterator> &other) const {
+    const EnumerateIterator *s = dynamic_cast<const EnumerateIterator *>(other.get());
+    return !(begin == s->begin
+             && end == s->end);
+}
+
+int EnumerateIterator::getIndex() const {
+    return index;
+}
+
+std::string EnumerateIterator::getString() const {
+    return *this->begin;
+}
+
+
+Enumerate::Enumerate(std::vector<std::string> vs) : enumerate_begin{vs.begin(), vs.end()},
+enumerate_end{vs.end(),vs.end()}
+{
+}
+
+std::unique_ptr<IterableIterator> Enumerate::ConstBegin() const {
+    unique_ptr<IterableIterator> p = make_unique<EnumerateIterator>(enumerate_begin);
+    return move(p);
+}
+
+std::unique_ptr<IterableIterator> Enumerate::ConstEnd() const {
+    unique_ptr<IterableIterator> p = make_unique<EnumerateIterator>(enumerate_end);
+    return move(p);
+}

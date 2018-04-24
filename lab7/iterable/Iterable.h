@@ -14,7 +14,7 @@ namespace utility {
 
         virtual IterableIterator &Next() = 0;
 
-        virtual bool NotEquals(const std::unique_ptr<utility::IterableIterator>&other) const = 0;
+        virtual bool NotEquals(const std::unique_ptr<utility::IterableIterator> &other) const = 0;
 
         virtual ~IterableIterator() = default;
 
@@ -26,7 +26,7 @@ namespace utility {
 
         IterableIterator &Next() override;
 
-        bool NotEquals(const std::unique_ptr<utility::IterableIterator>&other) const override;
+        bool NotEquals(const std::unique_ptr<utility::IterableIterator> &other) const override;
 
         explicit ZipperIterator(std::vector<int>::const_iterator left,
                                 std::vector<std::string>::const_iterator right,
@@ -86,6 +86,36 @@ namespace utility {
     private:
         ZipperIterator prototype_begin;
         ZipperIterator prototype_end;
+    };
+
+    class EnumerateIterator : public IterableIterator {
+    public:
+        std::pair<int, std::string> Dereference() const override;
+
+        IterableIterator &Next() override;
+
+        bool NotEquals(const std::unique_ptr<utility::IterableIterator> &other) const override;
+
+        explicit EnumerateIterator(std::vector<std::string >::const_iterator begin, std::vector<std::string >::const_iterator end);
+        int getIndex() const;
+
+        std::string getString() const;
+    private:
+        std::vector<std::string >::const_iterator begin;
+        std::vector<std::string >::const_iterator end;
+        int index =0;
+    };
+
+    class Enumerate: public Iterable
+    {
+    public:
+        explicit Enumerate( std::vector<std::string> vs);
+        std::unique_ptr<IterableIterator> ConstBegin() const override;
+        std::unique_ptr<IterableIterator> ConstEnd()const override;
+    private:
+        EnumerateIterator enumerate_begin;
+        EnumerateIterator enumerate_end;
+
     };
 }
 #endif //JIMP_EXERCISES_ITERABLE_H
