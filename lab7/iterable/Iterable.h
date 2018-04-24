@@ -14,7 +14,7 @@ namespace utility {
 
         virtual IterableIterator &Next() = 0;
 
-        virtual bool NotEquals(const IterableIterator &other) const = 0;
+        virtual bool NotEquals(const std::unique_ptr<utility::IterableIterator>&other) const = 0;
 
         virtual ~IterableIterator() = default;
 
@@ -26,7 +26,7 @@ namespace utility {
 
         IterableIterator &Next() override;
 
-        bool NotEquals(const IterableIterator &other) const override;
+        bool NotEquals(const std::unique_ptr<utility::IterableIterator>&other) const override;
 
         explicit ZipperIterator(std::vector<int>::const_iterator left,
                                 std::vector<std::string>::const_iterator right,

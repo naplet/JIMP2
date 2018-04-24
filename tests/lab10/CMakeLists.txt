@@ -1,4 +1,0 @@
-project(lab10)
-
-add_subdirectory_if_exists(algotest)
-add_subdirectory_if_exists(academiascheduler)

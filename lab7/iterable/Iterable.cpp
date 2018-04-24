@@ -41,8 +41,8 @@ IterableIterator &ZipperIterator::Next() {
     }
     return *this;
 }
-bool ZipperIterator::NotEquals(const IterableIterator &other) const {
-    const ZipperIterator *s = dynamic_cast<const ZipperIterator *>(&other);
+bool ZipperIterator::NotEquals(const std::unique_ptr<utility::IterableIterator>&other) const {
+    const ZipperIterator *s = dynamic_cast<const ZipperIterator *>(other.get());
     return !(current_left == s->current_left
              && current_right == s->current_right
              && left_end == s->left_end
@@ -62,7 +62,7 @@ IterableIteratorWrapper::IterableIteratorWrapper(std::unique_ptr<IterableIterato
     this->iterator = move(iterator);
 }
 bool IterableIteratorWrapper::operator!=(const IterableIteratorWrapper &other) const {
-    return this->iterator->NotEquals(*other.iterator);
+    return this->iterator->NotEquals(other.iterator);
 }
 std::pair<int, std::string> IterableIteratorWrapper::operator*() const {
 
