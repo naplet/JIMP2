@@ -117,5 +117,43 @@ namespace utility {
         EnumerateIterator enumerate_end;
 
     };
+    class ProductIterator : public IterableIterator {
+    public:
+        std::pair<int, std::string> Dereference() const override;
+
+        IterableIterator &Next() override;
+
+        bool NotEquals(const std::unique_ptr<utility::IterableIterator> &other) const override;
+
+        explicit ProductIterator(std::vector<int>::const_iterator left,
+                                std::vector<std::string>::const_iterator right,
+                                std::vector<int>::const_iterator left_end,
+                                std::vector<std::string>::const_iterator right_end);
+
+    private:
+        std::vector<int>::const_iterator current_left;
+        std::vector<std::string>::const_iterator current_right;
+        std::vector<int>::const_iterator left_end;
+        std::vector<std::string>::const_iterator right_end;
+        std::vector<int>::const_iterator left_start;
+        std::vector<std::string>::const_iterator right_start;
+
+        int getLeftProd() const;
+
+        std::string getRightProd() const;
+    };
+    class Product : public Iterable {
+    protected:
+        std::unique_ptr<IterableIterator> ConstBegin() const override;
+
+        std::unique_ptr<IterableIterator> ConstEnd() const override;
+
+    public:
+        Product(const std::vector<int> &, const std::vector<std::string> &);
+
+    private:
+        ProductIterator product_begin;
+        ProductIterator product_end;
+    };
 }
 #endif //JIMP_EXERCISES_ITERABLE_H

@@ -154,3 +154,78 @@ std::unique_ptr<IterableIterator> Enumerate::ConstEnd() const {
     unique_ptr<IterableIterator> p = make_unique<EnumerateIterator>(enumerate_end);
     return move(p);
 }
+
+std::pair<int, std::string> ProductIterator::Dereference() const {
+    int left_value = getLeftProd();
+    std::string right_value = getRightProd();
+    return std::make_pair(left_value, right_value);
+}
+
+IterableIterator & ProductIterator::Next() {
+    if (current_left != left_end) {
+
+
+        if (current_right != right_end) {
+            ++current_right;
+        }
+        else{
+            ++current_left;
+            current_right=right_start;
+        }
+    }
+    return *this;
+}
+
+bool ProductIterator::NotEquals(const std::unique_ptr<utility::IterableIterator> &other) const {
+    const ProductIterator *s = dynamic_cast<const ProductIterator *>(other.get());
+    return !(current_left == s->current_left
+             && current_right == s->current_right
+             && left_end == s->left_end
+             && right_end == s->right_end);
+}
+
+ProductIterator::ProductIterator(std::vector<int>::const_iterator left, std::vector<std::string>::const_iterator right,
+                                 std::vector<int>::const_iterator left_end,
+                                 std::vector<std::string>::const_iterator right_end) {
+    this->current_left = left;
+    this->left_end = left_end;
+    this->current_right = right;
+    this->right_end = right_end;
+    this->left_start = left;
+    this->right_start = right;
+}
+
+int ProductIterator::getLeftProd() const {
+    int left_value;
+    if (current_left != left_end) {
+        left_value = *current_left;
+    } else {
+        left_value = *(current_left - 1);
+    }
+    return left_value;
+}
+
+std::string ProductIterator::getRightProd() const {
+    std::string right_value;
+    if (current_right != right_end) {
+        right_value = *current_right;
+    } else {
+        right_value = *(current_right - 1);
+    }
+    return right_value;
+}
+
+std::unique_ptr<IterableIterator> Product::ConstBegin() const {
+    unique_ptr<IterableIterator> p = make_unique<ProductIterator>(product_begin);
+    return move(p);
+}
+
+std::unique_ptr<IterableIterator> Product::ConstEnd() const {
+    unique_ptr<IterableIterator> p = make_unique<ProductIterator>(product_end);
+    return move(p);
+}
+
+Product::Product(const std::vector<int> & vi, const std::vector<std::string> & vs): product_begin{vi.begin(), vs.begin(), vi.end(), vs.end()},
+                                                                              product_end{vi.end(), vs.end(), vi.end(), vs.end()} {
+
+}
