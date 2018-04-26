@@ -103,13 +103,13 @@ namespace utility {
     private:
         std::vector<std::string >::const_iterator begin;
         std::vector<std::string >::const_iterator end;
-        int index =0;
+        int index =1;
     };
 
     class Enumerate: public Iterable
     {
     public:
-        explicit Enumerate( std::vector<std::string> vs);
+        explicit Enumerate(const  std::vector<std::string> & vs);
         std::unique_ptr<IterableIterator> ConstBegin() const override;
         std::unique_ptr<IterableIterator> ConstEnd()const override;
     private:

@@ -140,7 +140,7 @@ std::string EnumerateIterator::getString() const {
 }
 
 
-Enumerate::Enumerate(std::vector<std::string> vs) : enumerate_begin{vs.begin(), vs.end()},
+Enumerate::Enumerate(const std::vector<std::string> & vs) : enumerate_begin{vs.begin(), vs.end()},
 enumerate_end{vs.end(),vs.end()}
 {
 }
