@@ -163,15 +163,16 @@ std::pair<int, std::string> ProductIterator::Dereference() const {
 
 IterableIterator & ProductIterator::Next() {
     if (current_left != left_end) {
-
-
-        if (current_right != right_end) {
-            ++current_right;
-        }
-        else{
+        ++current_right;
+        if(current_right==right_end){
             ++current_left;
             current_right=right_start;
         }
+
+    }
+    if(current_left==left_end){
+        current_right=right_end;
+        current_left=left_end;
     }
     return *this;
 }
